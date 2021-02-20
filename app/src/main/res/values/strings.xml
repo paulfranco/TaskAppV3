@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TaskAppV3</string>
+    <string name="new_project">New Project</string>
+    <string name="new_item">New Item</string>
+</resources>
