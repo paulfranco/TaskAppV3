@@ -62,6 +62,7 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
 
     override fun projectClick(index: Int) {
         val intent = Intent(this, ItemActivity::class.java)
+        intent.putExtra("projectIndex", index)
         startActivity(intent)
     }
 
