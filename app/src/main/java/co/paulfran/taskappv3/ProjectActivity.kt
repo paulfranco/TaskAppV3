@@ -1,5 +1,6 @@
 package co.paulfran.taskappv3
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.paulfran.taskappv3.databinding.ActivityProjectBinding
 
-class ProjectActivity : AppCompatActivity() {
+class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
 
     private lateinit var binding: ActivityProjectBinding
     private var projectsAdapter: ProjectsAdapter? = null
@@ -27,7 +28,7 @@ class ProjectActivity : AppCompatActivity() {
 
         AppData.initialize()
 
-        projectsAdapter = ProjectsAdapter(AppData.projects)
+        projectsAdapter = ProjectsAdapter(AppData.projects, this)
         binding.projectRecyclerView.adapter = projectsAdapter
     }
 
@@ -57,6 +58,15 @@ class ProjectActivity : AppCompatActivity() {
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    override fun projectClick(index: Int) {
+        val intent = Intent(this, ItemActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun projectLongClick(index: Int) {
+        TODO("Not yet implemented")
     }
 }
 
