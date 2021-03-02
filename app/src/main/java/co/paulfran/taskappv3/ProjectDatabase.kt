@@ -14,7 +14,7 @@ abstract class ProjectDatabase: RoomDatabase() {
         fun getDatabase(context: Context): ProjectDatabase? {
             if (instance == null) {
                 synchronized(ProjectDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, ProjectDatabase::class.java, "temporary_name").build()
+                    instance = Room.databaseBuilder(context.applicationContext, ProjectDatabase::class.java, AppData.dbFileName).build()
                 }
             }
             return instance
