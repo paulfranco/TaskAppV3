@@ -71,7 +71,16 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun itemClick(index: Int) {
-        thisProjectWithItems.items[index].completed = !thisProjectWithItems.items[index].completed
+        val item = thisProjectWithItems.items[index]
+        item.completed = !(item.completed)
+        val projectName = item.projectName
+        val itemName = item.name
+
+        // Update Item in Room
+        CoroutineScope(Dispatchers.IO).launch {
+            AppData.db.projectDao().updateItem(projectName, itemName, item.completed)
+        }
+        
         itemsAdapter!!.notifyDataSetChanged()
     }
 
