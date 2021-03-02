@@ -33,7 +33,7 @@
 
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/new_item_et"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_weight="0"
