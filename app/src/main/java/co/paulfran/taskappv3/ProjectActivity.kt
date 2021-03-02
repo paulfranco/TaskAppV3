@@ -13,6 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.paulfran.taskappv3.databinding.ActivityProjectBinding
+import java.io.File
+import java.lang.Exception
 
 class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
 
@@ -26,10 +28,22 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
 
         binding.projectRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        AppData.initialize()
-
         projectsAdapter = ProjectsAdapter(AppData.projects, this)
         binding.projectRecyclerView.adapter = projectsAdapter
+
+        if (databaseFileExists()) {
+            // Read the content from Room
+
+        } else {
+            // the very first time we are opening the app
+            AppData.initialize()
+
+            // show content in adapter
+            projectsAdapter = ProjectsAdapter(AppData.projects, this)
+            binding.projectRecyclerView.adapter = projectsAdapter
+
+            // now save the info to Room
+        }
     }
 
     override fun onResume() {
@@ -74,6 +88,14 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
     override fun projectLongClick(index: Int) {
         AppData.projects.removeAt(index)
         projectsAdapter!!.notifyItemRemoved(index)
+    }
+
+    private fun databaseFileExists(): Boolean {
+        return try {
+            File(getDatabasePath(AppData.dbFileName).absolutePath).exists()
+        } catch (e: Exception) {
+            false
+        }
     }
 }
 
