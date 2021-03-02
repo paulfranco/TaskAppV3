@@ -13,6 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.paulfran.taskappv3.databinding.ActivityProjectBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.lang.Exception
 
@@ -31,14 +35,27 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
         projectsAdapter = ProjectsAdapter(AppData.projects, this)
         binding.projectRecyclerView.adapter = projectsAdapter
 
+        AppData.db = ProjectDatabase.getDatabase(this)!!
+
         if (databaseFileExists()) {
             // Read the content from Room
+            CoroutineScope(Dispatchers.IO).launch {
+                AppData.projects = AppData.db.projectDao().getProjectsWithItems()
+
+                // change context to show data in recycler view
+                withContext(Dispatchers.Main) {
+                    // Recreate recycler view
+                    projectsAdapter = ProjectsAdapter(AppData.projects, this)
+                    binding.projectRecyclerView.adapter = projectsAdapter
+                }
+            }
+
 
         } else {
-            // the very first time we are opening the app
+            // the very first time we are opening the app. get initial data
             AppData.initialize()
 
-            // show content in adapter
+            // Recreate recycler view
             projectsAdapter = ProjectsAdapter(AppData.projects, this)
             binding.projectRecyclerView.adapter = projectsAdapter
 
