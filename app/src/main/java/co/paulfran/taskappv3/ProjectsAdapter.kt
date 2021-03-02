@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class ProjectsAdapter(private val list: List<Project>, listenerContext: OnProjectClickListener): RecyclerView.Adapter<ProjectsViewHolder>() {
+class ProjectsAdapter(private val list: List<ProjectWithItems>, listenerContext: OnProjectClickListener): RecyclerView.Adapter<ProjectsViewHolder>() {
 
     private var clickInterface: OnProjectClickListener = listenerContext
 
@@ -14,8 +14,8 @@ class ProjectsAdapter(private val list: List<Project>, listenerContext: OnProjec
     }
 
     override fun onBindViewHolder(holder: ProjectsViewHolder, position: Int) {
-        val project = list[position]
-        holder.bind(project)
+        val projectWithItems = list[position]
+        holder.bind(projectWithItems)
 
         holder.itemView.setOnClickListener {
             clickInterface.projectClick(position)

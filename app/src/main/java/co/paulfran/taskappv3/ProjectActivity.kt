@@ -45,7 +45,7 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
                 // change context to show data in recycler view
                 withContext(Dispatchers.Main) {
                     // Recreate recycler view
-                    projectsAdapter = ProjectsAdapter(AppData.projects, this)
+                    projectsAdapter = ProjectsAdapter(AppData.projects, this@ProjectActivity)
                     binding.projectRecyclerView.adapter = projectsAdapter
                 }
             }
@@ -97,7 +97,7 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
             val newProjectWithItems = ProjectWithItems(newProject, mutableListOf())
 
             AppData.projects.add(newProjectWithItems)
-            
+
             // Inserted at last position
             projectsAdapter!!.notifyItemInserted(AppData.projects.count())
 

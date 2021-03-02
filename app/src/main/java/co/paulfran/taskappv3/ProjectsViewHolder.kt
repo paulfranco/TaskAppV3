@@ -14,8 +14,8 @@ class ProjectsViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerV
         projectCountTextView = itemView.findViewById(R.id.project_count_tv)
     }
 
-    fun bind(project: Project) {
-        projectNameTextView!!.text = project.name
-        projectCountTextView!!.text = "${project.items.count()} items"
+    fun bind(projectWithItems: ProjectWithItems) {
+        projectNameTextView!!.text = projectWithItems.project.name
+        projectCountTextView!!.text = "${projectWithItems.items.count()} items"
     }
 }
