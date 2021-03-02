@@ -124,8 +124,18 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
     }
 
     override fun projectLongClick(index: Int) {
+        val projectName = AppData.projects[index].project.name
+
+        // Delete from Room
+        CoroutineScope(Dispatchers.IO).launch {
+            AppData.db.projectDao().deleteProject(projectName)
+            AppData.db.projectDao().deleteItemsOfProject(projectName)
+        }
+
+        // Remove from Runtime Adapter
         AppData.projects.removeAt(index)
         projectsAdapter!!.notifyItemRemoved(index)
+        projectsAdapter!!.notifyItemRangeChanged(index, AppData.projects.count())
     }
 
     private fun databaseFileExists(): Boolean {

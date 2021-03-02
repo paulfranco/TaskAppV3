@@ -80,7 +80,7 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
         CoroutineScope(Dispatchers.IO).launch {
             AppData.db.projectDao().updateItem(projectName, itemName, item.completed)
         }
-        
+
         itemsAdapter!!.notifyDataSetChanged()
     }
 
