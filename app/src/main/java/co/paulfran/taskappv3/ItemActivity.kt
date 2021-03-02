@@ -35,6 +35,7 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
+        // ClickListener on Add New Item EditText
         binding.newItemEt.setOnKeyListener { v, keyCode, event ->
 
             if (keyCode ==KeyEvent.KEYCODE_ENTER) {
@@ -67,6 +68,7 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun itemLongClick(index: Int) {
-        TODO("Not yet implemented")
+        thisProject.items.removeAt(index)
+        itemsAdapter!!.notifyItemRemoved(index)
     }
 }

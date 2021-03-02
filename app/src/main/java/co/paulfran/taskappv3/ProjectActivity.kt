@@ -32,6 +32,11 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
         binding.projectRecyclerView.adapter = projectsAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        projectsAdapter!!.notifyDataSetChanged()
+    }
+
     fun createNewProject(v: View) {
         val builder = AlertDialog.Builder(this)
 
@@ -67,7 +72,8 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
     }
 
     override fun projectLongClick(index: Int) {
-        TODO("Not yet implemented")
+        AppData.projects.removeAt(index)
+        projectsAdapter!!.notifyItemRemoved(index)
     }
 }
 
