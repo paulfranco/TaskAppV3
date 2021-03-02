@@ -60,6 +60,19 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
             binding.projectRecyclerView.adapter = projectsAdapter
 
             // now save the info to Room
+            CoroutineScope(Dispatchers.IO).launch {
+                // For Each ProjectWithItems
+                for (projectWithItems in AppData.projects) {
+                    // Insert Project
+                    AppData.db.projectDao().insertProject(projectWithItems.project)
+                    // for each projectWithItems
+                    for (item in projectWithItems.items) {
+                        // Insert item
+                        AppData.db.projectDao().insertItem(item)
+                    }
+                }
+            }
+
         }
     }
 
@@ -80,11 +93,19 @@ class ProjectActivity : AppCompatActivity(), OnProjectClickListener {
 
         builder.setPositiveButton("Save") { dialog, which ->
             val projectName: String = input.text.toString()
-            val newProject = Project(projectName, mutableListOf())
+            val newProject = Projects(projectName)
+            val newProjectWithItems = ProjectWithItems(newProject, mutableListOf())
 
-            AppData.projects.add(newProject)
+            AppData.projects.add(newProjectWithItems)
+            
             // Inserted at last position
             projectsAdapter!!.notifyItemInserted(AppData.projects.count())
+
+            // Add New Project to Room
+            CoroutineScope(Dispatchers.IO).launch {
+                AppData.db.projectDao().insertProject(newProject)
+            }
+
 
         }
 
