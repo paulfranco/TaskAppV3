@@ -40,5 +40,5 @@ interface ProjectDao {
     // Update an item
     @Query("UPDATE Items SET completed=:completedVal WHERE item_name=:itemName AND project_name=:projectName")
     suspend fun updateItem(projectName: String, itemName: String, completedVal: Boolean)
-    
+
 }
