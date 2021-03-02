@@ -51,7 +51,7 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
                     CoroutineScope(Dispatchers.IO). launch {
                         AppData.db.projectDao().insertItem(item)
                     }
-                    
+
                     itemsAdapter!!.notifyItemInserted(thisProjectWithItems.items.count())
                     binding.newItemEt.text.clear()
 
@@ -76,6 +76,14 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun itemLongClick(index: Int) {
+        val projectName = thisProjectWithItems.project.name
+        val itemName = thisProjectWithItems.items[index].name
+
+        // Delete from Room
+        CoroutineScope(Dispatchers.IO).launch {
+            AppData.db.projectDao().deleteItem(projectName, itemName)
+        }
+
         thisProjectWithItems.items.removeAt(index)
         itemsAdapter!!.notifyItemRemoved(index)
     }
