@@ -17,7 +17,7 @@ class ItemsViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView
     }
 
 
-    fun bind(item: Item) {
+    fun bind(item: Items) {
         itemNameTextView!!.text = item.name
         itemCheckBox!!.isChecked = item.completed
     }
