@@ -14,6 +14,7 @@ data class Items(
         var id = 0
 }
 
+@Entity
 data class Projects(
         @ColumnInfo(name = "project_name")
         val name: String
