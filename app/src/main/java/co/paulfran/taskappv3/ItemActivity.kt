@@ -12,7 +12,7 @@ import co.paulfran.taskappv3.databinding.ActivityItemBinding
 class ItemActivity : AppCompatActivity(), OnItemClickListener {
 
     lateinit var binding: ActivityItemBinding
-    lateinit var thisProject: Project
+    lateinit var thisProjectWithItems: ProjectWithItems
     var itemsAdapter: ItemsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +21,13 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(binding.root)
 
         var selectedProject = intent.getIntExtra("projectIndex", 0)
-        thisProject = AppData.projects[selectedProject]
+        thisProjectWithItems = AppData.projects[selectedProject]
 
-        binding.toolbarTitle.text = thisProject.name
+        binding.toolbarTitle.text = thisProjectWithItems.project.name
 
         // RecyclerView
         binding.itemsRecyclerView.layoutManager = LinearLayoutManager(this)
-        itemsAdapter = ItemsAdapter(thisProject, this)
+        itemsAdapter = ItemsAdapter(thisProjectWithItems, this)
         binding.itemsRecyclerView.adapter = itemsAdapter
 
         // Toolbar
@@ -42,8 +42,8 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     val name: String = binding.newItemEt.text.toString()
                     val item = Item(name, false)
-                    thisProject.items.add(item)
-                    itemsAdapter!!.notifyItemInserted(thisProject.items.count())
+                    thisProjectWithItems.items.add(item)
+                    itemsAdapter!!.notifyItemInserted(thisProjectWithItems.items.count())
                     binding.newItemEt.text.clear()
 
                     // Hide Keyboard
@@ -62,12 +62,12 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun itemClick(index: Int) {
-        thisProject.items[index].completed = !thisProject.items[index].completed
+        thisProjectWithItems.items[index].completed = !thisProjectWithItems.items[index].completed
         itemsAdapter!!.notifyDataSetChanged()
     }
 
     override fun itemLongClick(index: Int) {
-        thisProject.items.removeAt(index)
+        thisProjectWithItems.items.removeAt(index)
         itemsAdapter!!.notifyItemRemoved(index)
     }
 }
