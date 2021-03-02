@@ -8,6 +8,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.paulfran.taskappv3.R
 import co.paulfran.taskappv3.databinding.ActivityItemBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ItemActivity : AppCompatActivity(), OnItemClickListener {
 
@@ -41,8 +44,14 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
             if (keyCode ==KeyEvent.KEYCODE_ENTER) {
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     val name: String = binding.newItemEt.text.toString()
-                    val item = Item(name, false)
+                    val item = Items(name, thisProjectWithItems.project.name,false)
                     thisProjectWithItems.items.add(item)
+
+                    // Add to Room
+                    CoroutineScope(Dispatchers.IO). launch {
+                        AppData.db.projectDao().insertItem(item)
+                    }
+                    
                     itemsAdapter!!.notifyItemInserted(thisProjectWithItems.items.count())
                     binding.newItemEt.text.clear()
 
