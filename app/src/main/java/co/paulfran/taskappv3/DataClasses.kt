@@ -1,11 +1,30 @@
 package co.paulfran.taskappv3
 
-data class Item(
-        val name: String,
-        var completed: Boolean
-)
+import androidx.room.*
 
-data class Project(
+@Entity
+data class Items(
+        @ColumnInfo(name = "item_name")
         val name: String,
-        var items: MutableList<Item>
+        @ColumnInfo(name = "project_name")
+        val projectName: String,
+        var completed: Boolean
+) {
+        @PrimaryKey(autoGenerate = true)
+        var id = 0
+}
+
+data class Projects(
+        @ColumnInfo(name = "project_name")
+        val name: String
+) {
+        @PrimaryKey(autoGenerate = true)
+        var id = 0
+}
+
+data class ProjectWithItems(
+        @Embedded
+        val project: Projects,
+        @Relation(parentColumn = "project_name", entityColumn = "project_name")
+        val items: MutableList<Items>
 )

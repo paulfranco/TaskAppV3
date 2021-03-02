@@ -51,7 +51,6 @@ class ItemActivity : AppCompatActivity(), OnItemClickListener {
                     inputManager.hideSoftInputFromWindow(v.windowToken, 0)
                 }
             }
-
             false
         }
 
